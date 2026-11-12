@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Himanshu Kashyap</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #0f1117;
+  --bg2:      #1a1d27;
+  --bg3:      #21253a;
+  --accent:   #6c63ff;
+  --accent2:  #a78bfa;
+  --green:    #34d399;
+  --yellow:   #fbbf24;
+  --text:     #e2e8f0;
+  --muted:    #94a3b8;
+  --border:   rgba(255,255,255,0.08);
+  --sans:     'Inter', sans-serif;
+  --mono:     'JetBrains Mono', monospace;
+  color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+  height: 60px;
+  background: rgba(15,17,23,0.9);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+.nav-logo em { color: var(--accent2); font-style: normal; }
+.nav-links { display: flex; gap: 1.8rem; list-style: none; }
+.nav-links a {
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--text); }
+
+/* HERO */
+#hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 100px 2rem 60px;
+  max-width: 860px;
+  margin: 0 auto;
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--green);
+  background: rgba(52,211,153,0.1);
+  border: 1px solid rgba(52,211,153,0.2);
+  border-radius: 20px;
+  padding: 0.3rem 0.9rem;
+  margin-bottom: 1.6rem;
+}
+.badge-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+h1 {
+  font-size: clamp(2.6rem, 7vw, 4.8rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+h1 .hi { color: var(--muted); font-weight: 400; font-size: 0.55em; display: block; letter-spacing: 0; margin-bottom: 0.2rem; }
+h1 .purple { color: var(--accent2); }
+.tagline {
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  color: var(--muted);
+  max-width: 500px;
+  margin-bottom: 2.5rem;
+  font-weight: 400;
+  line-height: 1.7;
+}
+.hero-actions { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.65rem 1.4rem;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+.btn-fill { background: var(--accent); color: #fff; }
+.btn-fill:hover { background: var(--accent2); transform: translateY(-1px); }
+.btn-out { background: transparent; color: var(--text); border: 1px solid var(--border); }
+.btn-out:hover { border-color: var(--accent2); color: var(--accent2); }
+
+/* SCROLL CARDS */
+.scroll-hint {
+  margin-top: 3rem;
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.hint-chip {
+  font-size: 0.75rem;
+  font-family: var(--mono);
+  color: var(--muted);
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.3rem 0.7rem;
+}
+
+/* SECTIONS */
+.section {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 5rem 2rem;
+}
+.section-top {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 2.2rem;
+}
+.section-num {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--accent2);
+  background: rgba(167,139,250,0.1);
+  border: 1px solid rgba(167,139,250,0.2);
+  border-radius: 4px;
+  padding: 0.15rem 0.5rem;
+}
+h2 {
+  font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+.sep {
+  height: 1px;
+  background: var(--border);
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+/* ABOUT */
+.about-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+.about-left p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.85;
+  margin-bottom: 1rem;
+}
+.about-left p b { color: var(--text); font-weight: 600; }
+.about-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.2rem; }
+.tag {
+  font-size: 0.78rem;
+  color: var(--text);
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.3rem 0.75rem;
+  font-weight: 500;
+}
+.about-right {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.6rem;
+  height: fit-content;
+}
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.85rem;
+}
+.info-row:last-child { border-bottom: none; }
+.info-label { color: var(--muted); }
+.info-val { color: var(--text); font-weight: 600; text-align: right; }
+
+/* EXPLORING */
+.explore-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1rem;
+}
+.ex-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.4rem;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.ex-card:hover { border-color: rgba(167,139,250,0.4); transform: translateY(-2px); }
+.ex-icon { font-size: 1.6rem; margin-bottom: 0.8rem; }
+.ex-title { font-size: 0.92rem; font-weight: 700; color: #fff; margin-bottom: 0.4rem; }
+.ex-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.65; margin-bottom: 1rem; }
+.level-pill {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-family: var(--mono);
+  font-weight: 500;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+}
+.l-learn { background: rgba(99,102,241,0.15); color: #818cf8; border: 1px solid rgba(99,102,241,0.25); }
+.l-explore { background: rgba(167,139,250,0.12); color: var(--accent2); border: 1px solid rgba(167,139,250,0.2); }
+.l-curious { background: rgba(251,191,36,0.1); color: var(--yellow); border: 1px solid rgba(251,191,36,0.2); }
+
+/* LANGUAGES */
+.lang-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2.5rem; }
+.lang-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.3rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: border-color 0.2s;
+}
+.lang-card:hover { border-color: rgba(167,139,250,0.4); }
+.lang-em { font-size: 1.7rem; }
+.lang-name { font-size: 0.9rem; font-weight: 700; color: #fff; }
+.lang-note { font-size: 0.72rem; color: var(--muted); margin-top: 0.1rem; }
+
+/* DISCLAIMER */
+.dis-box {
+  background: rgba(251,191,36,0.07);
+  border: 1px solid rgba(251,191,36,0.2);
+  border-radius: 10px;
+  padding: 1rem 1.3rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 2.5rem;
+}
+.dis-icon { font-size: 1rem; flex-shrink: 0; margin-top: 0.1rem; }
+.dis-text { font-size: 0.82rem; color: rgba(251,191,36,0.85); line-height: 1.6; }
+.dis-text b { color: var(--yellow); }
+
+/* GOALS */
+.goals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+.goal-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.2rem;
+  display: flex;
+  gap: 0.9rem;
+  align-items: flex-start;
+  transition: border-color 0.2s;
+}
+.goal-card:hover { border-color: rgba(52,211,153,0.3); }
+.g-icon { font-size: 1.1rem; flex-shrink: 0; }
+.g-title { font-size: 0.88rem; font-weight: 700; color: #fff; margin-bottom: 0.25rem; }
+.g-sub { font-size: 0.78rem; color: var(--muted); line-height: 1.55; }
+
+/* CONTACT */
+.contact-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2.5rem;
+  text-align: center;
+}
+.contact-card h3 { font-size: 1.6rem; font-weight: 800; color: #fff; letter-spacing: -0.02em; margin-bottom: 0.6rem; }
+.contact-card p { color: var(--muted); font-size: 0.9rem; margin-bottom: 2rem; }
+.clinks { display: flex; justify-content: center; gap: 0.8rem; flex-wrap: wrap; }
+.clink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+  padding: 0.65rem 1.3rem;
+  border-radius: 8px;
+  text-decoration: none;
+  border: 1px solid var(--border);
+  color: var(--text);
+  background: var(--bg3);
+  transition: all 0.2s;
+}
+.clink:hover { border-color: var(--accent2); color: var(--accent2); transform: translateY(-1px); }
+
+footer {
+  text-align: center;
+  padding: 2rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  max-width: 860px;
+  margin: 0 auto;
+}
+footer b { color: var(--accent2); font-weight: 600; }
+
+@media (max-width: 640px) {
+  nav { padding: 0 1.2rem; }
+  .nav-links { gap: 1rem; }
+  .nav-links a { font-size: 0.78rem; }
+  #hero { padding: 90px 1.2rem 50px; }
+  .section { padding: 3.5rem 1.2rem; }
+  .about-layout { grid-template-columns: 1fr; }
+  .lang-grid { grid-template-columns: 1fr; }
+  .goals-grid { grid-template-columns: 1fr; }
+  h1 { font-size: 2.4rem; }
+  .contact-card { padding: 1.6rem 1.2rem; }
+}
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+.privacy-note { max-width:860px; margin:0 auto; padding:0 2rem 1.5rem; font-size:0.75rem; color:var(--muted); text-align:center; }
+</style>
+</head>
+<body oncontextmenu="return false">
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Himanshu <em>Kashyap</em></div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#exploring">Exploring</a></li>
+    <li><a href="#goals">Goals</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div style="width:100%">
+    <div class="badge"><span class="badge-dot"></span> Student &amp; Curious Learner</div>
+    <h1>
+      <span class="hi">Hi, I'm</span>
+      Himanshu<br><span class="purple">Kashyap</span>
+    </h1>
+    <p class="tagline">
+      Technology ki duniya explore kar raha hoon — ek curious student jo thoda thoda sab kuch seekh raha hai, aur enjoy kar raha hai har step ko.
+    </p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn btn-fill">📬 Contact Karo</a>
+      <a href="#exploring" class="btn btn-out">🚀 Kya Seekh Raha Hoon</a>
+    </div>
+    <div class="scroll-hint">
+      <span class="hint-chip">Python</span>
+      <span class="hint-chip">C / C++</span>
+      <span class="hint-chip">Ethical Hacking</span>
+      <span class="hint-chip">Web Dev</span>
+      <span class="hint-chip">Game Dev</span>
+      <span class="hint-chip">AI Tools</span>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ABOUT -->
+<div class="section" id="about">
+  <div class="section-top">
+    <span class="section-num">01</span>
+    <h2>About Me</h2>
+  </div>
+  <div class="about-layout">
+    <div class="about-left">
+      <p>Main <b>Himanshu Kashyap</b> hoon — ek student jo technology se genuinely excited hai. Mujhe ek jagah rukna pasand nahi, isliye main bahut saari cheezein explore karta hoon.</p>
+      <p>Abhi koi bhi cheez perfectly nahi aati — lekin yahi toh seekhne ka maza hai. Har topic mein thoda thoda ghus ke dekhta hoon, phir aage badhta hoon.</p>
+      <p>Free time mein <b>YouTube Shorts</b> dekhna bahut pasand hai. Instagram thoda kam chalata hoon — bas connected rehne ke liye.</p>
+      <div class="about-tags">
+        <span class="tag">📱 YouTube Shorts</span>
+        <span class="tag">📸 Instagram (rarely)</span>
+        <span class="tag">💻 Tech Explorer</span>
+        <span class="tag">📚 Always Learning</span>
+      </div>
+    </div>
+    <div class="about-right">
+      <div class="info-row">
+        <span class="info-label">Name</span>
+        <span class="info-val">Himanshu Kashyap</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Role</span>
+        <span class="info-val">Student</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Level</span>
+        <span class="info-val">Beginner → Learning</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Hobby</span>
+        <span class="info-val">YouTube Shorts</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Status</span>
+        <span class="info-val" style="color:var(--green)">🟢 Seekh raha hoon</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sep"></div>
+
+<!-- EXPLORING -->
+<div class="section" id="exploring">
+  <div class="section-top">
+    <span class="section-num">02</span>
+    <h2>Kya Explore Kar Raha Hoon</h2>
+  </div>
+
+  <!-- Disclaimer -->
+  <div class="dis-box">
+    <span class="dis-icon">💡</span>
+    <span class="dis-text"><b>Note:</b> Yeh sab sirf flex ke liye hai — portfolio fun ke liye bana hai. Isse seriously mat lena! Abhi main genuinely beginner hoon aur seekh raha hoon. 😄</span>
+  </div>
+
+  <div class="explore-grid">
+    <div class="ex-card">
+      <div class="ex-icon">🎮</div>
+      <div class="ex-title">Game Development</div>
+      <div class="ex-desc">Games kaise bante hain, basic mechanics aur game logic — explore kar raha hoon.</div>
+      <span class="level-pill l-curious">Curious</span>
+    </div>
+    <div class="ex-card">
+      <div class="ex-icon">📱</div>
+      <div class="ex-title">App Development</div>
+      <div class="ex-desc">Mobile apps banana seekhna chahta hoon — Android ya cross-platform, dekhna hai.</div>
+      <span class="level-pill l-curious">Curious</span>
+    </div>
+    <div class="ex-card">
+      <div class="ex-icon">🔐</div>
+      <div class="ex-title">Ethical Hacking</div>
+      <div class="ex-desc">Cybersecurity basics, steganography, browser fingerprinting — thoda samajh aa raha hai.</div>
+      <span class="level-pill l-learn">Learning</span>
+    </div>
+    <div class="ex-card">
+      <div class="ex-icon">🌐</div>
+      <div class="ex-title">Web Development</div>
+      <div class="ex-desc">HTML, CSS websites — basics explore kar raha hoon. Yeh site bhi wahi seekhte bani!</div>
+      <span class="level-pill l-learn">Learning</span>
+    </div>
+    <div class="ex-card">
+      <div class="ex-icon">🤖</div>
+      <div class="ex-title">AI Tools</div>
+      <div class="ex-desc">Claude, ChatGPT jaise AI tools use karna practically seekh raha hoon.</div>
+      <span class="level-pill l-learn">Learning</span>
+    </div>
+    <div class="ex-card">
+      <div class="ex-icon">📊</div>
+      <div class="ex-title">Data Entry</div>
+      <div class="ex-desc">Spreadsheets aur data organization — ek useful aur practical skill hai yeh.</div>
+      <span class="level-pill l-explore">Exploring</span>
+    </div>
+  </div>
+
+  <!-- Languages -->
+  <div style="margin-top:2.8rem">
+    <div class="section-top" style="margin-bottom:1.2rem">
+      <span class="section-num">02b</span>
+      <h2 style="font-size:1.3rem">Programming Languages</h2>
+    </div>
+    <div class="lang-grid">
+      <div class="lang-card">
+        <span class="lang-em">⚙️</span>
+        <div>
+          <div class="lang-name">C Language</div>
+          <div class="lang-note">Basic concepts, syntax</div>
+        </div>
+      </div>
+      <div class="lang-card">
+        <span class="lang-em">➕</span>
+        <div>
+          <div class="lang-name">C++</div>
+          <div class="lang-note">OOP basics, classes</div>
+        </div>
+      </div>
+      <div class="lang-card">
+        <span class="lang-em">🐍</span>
+        <div>
+          <div class="lang-name">Python</div>
+          <div class="lang-note">Scripting, basics</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sep"></div>
+
+<!-- GOALS -->
+<div class="section" id="goals">
+  <div class="section-top">
+    <span class="section-num">03</span>
+    <h2>Mere Goals</h2>
+  </div>
+  <div class="goals-grid">
+    <div class="goal-card">
+      <span class="g-icon">🎯</span>
+      <div>
+        <div class="g-title">Ek Skill Mein Master Banna</div>
+        <div class="g-sub">Abhi sab explore kar raha hoon, jaldi ek main field choose karunga aur usme deep jaaunga.</div>
+      </div>
+    </div>
+    <div class="goal-card">
+      <span class="g-icon">🔐</span>
+      <div>
+        <div class="g-title">Ethical Hacking Certification</div>
+        <div class="g-sub">CEH ya CompTIA Security+ — step by step prepare kar raha hoon.</div>
+      </div>
+    </div>
+    <div class="goal-card">
+      <span class="g-icon">💻</span>
+      <div>
+        <div class="g-title">Pehla Real Project Banana</div>
+        <div class="g-sub">Game, app ya website — kuch bhi — apne haath se banana chahta hoon.</div>
+      </div>
+    </div>
+    <div class="goal-card">
+      <span class="g-icon">🐍</span>
+      <div>
+        <div class="g-title">Python Mein Strong Hona</div>
+        <div class="g-sub">Automation aur scripting ke liye Python mein confident hona chahta hoon.</div>
+      </div>
+    </div>
+    <div class="goal-card">
+      <span class="g-icon">🚩</span>
+      <div>
+        <div class="g-title">CTF Challenges Solve Karna</div>
+        <div class="g-sub">TryHackMe aur PicoCTF pe challenges karke hacking skills improve karna.</div>
+      </div>
+    </div>
+    <div class="goal-card">
+      <span class="g-icon">🌟</span>
+      <div>
+        <div class="g-title">Khud Ko Prove Karna</div>
+        <div class="g-sub">Abhi beginner hoon — kal ek capable developer ban ke dikhaunga. Yeh promise hai.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sep"></div>
+
+<!-- CONTACT -->
+<div class="section" id="contact">
+  <div class="section-top">
+    <span class="section-num">04</span>
+    <h2>Contact</h2>
+  </div>
+  <div class="contact-card">
+    <h3>Baat Karte Hain 👋</h3>
+    <p>Fellow learner ho, ya kuch sikhana chahte ho — reach out karo. Main bhi seekh raha hoon!</p>
+    <div class="clinks">
+      <a href="mailto:busi.ness.him.anshu184@gmail.com" class="clink">📧 Gmail</a>
+      <a href="https://www.instagram.com/x_07_himanshu?vrfl=OW5zaGF3dW00MW5q" class="clink" target="_blank" rel="noopener">📸 Instagram</a>
+    </div>
+  </div>
+</div>
+
+<div class="privacy-note">🔒 Privacy note: yeh site testing ke liye basic browser info (browser, device, screen, time zone, approx. location/IP) log karti hai.</div>
+<footer>
+  Made by <b>Himanshu Kashyap</b> &nbsp;·&nbsp; Student &amp; Explorer &nbsp;·&nbsp; 2024
+</footer>
+
+<script>
+  document.addEventListener('contextmenu', e => e.preventDefault());
+  document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && ['s','p','u'].includes(e.key.toLowerCase())) e.preventDefault();
+  });
+</script>
+
+<script>
+// ===== Visitor logging (Supabase) =====
+const SUPABASE_URL = "PASTE_YOUR_PROJECT_URL_HERE"; // e.g. https://abcdxyz.supabase.co
+const SUPABASE_KEY = "sb_publishable_iLLR1o49j2Ts8nxtxQhmaQ_6ZLiQVVI"; // publishable key: public site mein safe
+
+(async function logVisit() {
+  try { if (sessionStorage.getItem("logged")) return; } catch (e) {}
+  const ua = navigator.userAgent;
+  const c = navigator.connection || {};
+  const info = {
+    page: location.href,
+    userAgent: ua,
+    deviceType: /Mobi|Android/i.test(ua) ? "Mobile" : "Desktop",
+    screen: screen.width + "x" + screen.height,
+    viewport: innerWidth + "x" + innerHeight,
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    language: navigator.language,
+    referrer: document.referrer || "Direct",
+    networkType: c.type || null,
+    effectiveType: c.effectiveType || null,
+    downlink: c.downlink ?? null,
+    rtt: c.rtt ?? null,
+    cpuCores: navigator.hardwareConcurrency || null,
+    deviceMemory: navigator.deviceMemory || null,
+    touchPoints: navigator.maxTouchPoints || 0
+  };
+  try {
+    const r = await fetch("https://ipapi.co/json/");
+    const j = await r.json();
+    info.ip = j.ip; info.isp = j.org; info.city = j.city;
+    info.region = j.region; info.country = j.country_name;
+  } catch (e) {}
+  try {
+    await fetch(SUPABASE_URL + "/rest/v1/visits", {
+      method: "POST",
+      headers: {
+        "apikey": SUPABASE_KEY,
+        "Content-Type": "application/json",
+        "Prefer": "return=minimal"
+      },
+      body: JSON.stringify({ info })
+    });
+    try { sessionStorage.setItem("logged", "1"); } catch (e) {}
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

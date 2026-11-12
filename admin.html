@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin — Visitors</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0f1117; --bg2:#1a1d27; --bg3:#21253a; --accent:#6c63ff; --accent2:#a78bfa;
+  --green:#34d399; --red:#f87171; --text:#e2e8f0; --muted:#94a3b8;
+  --border:rgba(255,255,255,0.08); --mono:'JetBrains Mono',monospace; --sans:'Inter',sans-serif;
+  color-scheme: dark;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5}
+.wrap{max-width:1100px;margin:0 auto;padding:1.5rem}
+header{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem}
+h1{font-size:1.2rem;font-weight:700;color:#fff}
+.sub{font-size:0.78rem;color:var(--muted)}
+button{font-family:inherit;cursor:pointer;border-radius:8px;border:1px solid var(--border);background:var(--bg3);color:var(--text);padding:0.55rem 1rem;font-size:0.82rem;font-weight:600;transition:all .2s}
+button:hover{border-color:var(--accent2);color:var(--accent2)}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+button.primary:hover{background:var(--accent2);color:#fff}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.6rem}
+#login{max-width:380px;margin:12vh auto}
+#login h1{margin-bottom:1rem}
+input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:0.7rem 0.9rem;color:var(--text);font-size:0.9rem;margin-bottom:0.8rem;font-family:inherit}
+input:focus{outline:none;border-color:var(--accent2)}
+.err{color:var(--red);font-size:0.8rem;margin-top:0.6rem;min-height:1.2em}
+#panel{display:none}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:0.8rem;margin-bottom:1.2rem}
+.stat{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1rem}
+.stat .n{font-size:1.5rem;font-weight:700;color:#fff}
+.stat .l{font-size:0.72rem;color:var(--muted);margin-top:0.1rem}
+.tools{display:flex;gap:0.6rem;margin-bottom:1rem;flex-wrap:wrap}
+.tools input{margin:0;flex:1;min-width:200px}
+.table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px;background:var(--bg2)}
+table{width:100%;border-collapse:collapse;font-size:0.8rem}
+th,td{padding:0.7rem 0.9rem;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap}
+th{color:var(--muted);font-weight:600;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.04em;background:var(--bg3);position:sticky;top:0}
+td{font-family:var(--mono);font-size:0.76rem}
+tr:last-child td{border-bottom:none}
+tr.row{cursor:pointer}
+tr.row:hover td{background:rgba(108,99,255,0.06)}
+.detail td{white-space:pre-wrap;word-break:break-all;color:var(--green);background:var(--bg);font-size:0.72rem}
+.empty{padding:2rem;text-align:center;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- LOGIN -->
+  <div id="login" class="card">
+    <h1>🔐 Admin Login</h1>
+    <input id="email" type="email" placeholder="Email" autocomplete="username">
+    <input id="password" type="password" placeholder="Password" autocomplete="current-password">
+    <button class="primary" style="width:100%" onclick="login()">Login</button>
+    <div class="err" id="login-err"></div>
+  </div>
+
+  <!-- PANEL -->
+  <div id="panel">
+    <header>
+      <div>
+        <h1>📊 Visitors</h1>
+        <div class="sub" id="who"></div>
+      </div>
+      <div style="display:flex;gap:0.6rem">
+        <button onclick="loadVisits()">↻ Refresh</button>
+        <button onclick="exportCSV()">⬇ CSV</button>
+        <button onclick="logout()">Logout</button>
+      </div>
+    </header>
+
+    <div class="stats">
+      <div class="stat"><div class="n" id="s-total">0</div><div class="l">Total visits</div></div>
+      <div class="stat"><div class="n" id="s-mobile">0</div><div class="l">Mobile</div></div>
+      <div class="stat"><div class="n" id="s-countries">0</div><div class="l">Countries</div></div>
+      <div class="stat"><div class="n" id="s-today">0</div><div class="l">Today</div></div>
+    </div>
+
+    <div class="tools">
+      <input id="search" placeholder="Search (city, ISP, browser, IP...)" oninput="render()">
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Time</th><th>IP</th><th>Location</th><th>ISP</th><th>Device</th><th>Screen</th><th>Network</th><th>Referrer</th></tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div class="empty" id="empty" style="display:none">Abhi koi visit nahi.</div>
+    </div>
+    <div class="sub" style="margin-top:0.8rem">Row par click karo — poori detail dikhegi.</div>
+  </div>
+
+</div>
+
+<script>
+const SUPABASE_URL = "PASTE_YOUR_PROJECT_URL_HERE"; // index.html wala hi URL
+const SUPABASE_KEY = "sb_publishable_iLLR1o49j2Ts8nxtxQhmaQ_6ZLiQVVI";
+
+let token = null;
+let visits = [];
+
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s ?? "—").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+
+async function login() {
+  $("login-err").textContent = "";
+  try {
+    const r = await fetch(SUPABASE_URL + "/auth/v1/token?grant_type=password", {
+      method: "POST",
+      headers: { "apikey": SUPABASE_KEY, "Content-Type": "application/json" },
+      body: JSON.stringify({ email: $("email").value.trim(), password: $("password").value })
+    });
+    const j = await r.json();
+    if (!r.ok) throw new Error(j.error_description || j.msg || "Login fail");
+    token = j.access_token;
+    try { sessionStorage.setItem("tok", token); } catch (e) {}
+    $("who").textContent = j.user?.email || "";
+    showPanel();
+  } catch (e) {
+    $("login-err").textContent = e.message;
+  }
+}
+
+function logout() {
+  token = null;
+  try { sessionStorage.removeItem("tok"); } catch (e) {}
+  $("panel").style.display = "none";
+  $("login").style.display = "block";
+  $("password").value = "";
+}
+
+function showPanel() {
+  $("login").style.display = "none";
+  $("panel").style.display = "block";
+  loadVisits();
+}
+
+async function loadVisits() {
+  const r = await fetch(SUPABASE_URL + "/rest/v1/visits?select=*&order=created_at.desc&limit=500", {
+    headers: { "apikey": SUPABASE_KEY, "Authorization": "Bearer " + token }
+  });
+  if (r.status === 401) { logout(); return; }
+  visits = await r.json();
+  render();
+}
+
+function render() {
+  const q = $("search").value.toLowerCase();
+  const list = visits.filter(v => !q || JSON.stringify(v.info).toLowerCase().includes(q));
+  const today = new Date().toDateString();
+
+  $("s-total").textContent = visits.length;
+  $("s-mobile").textContent = visits.filter(v => v.info?.deviceType === "Mobile").length;
+  $("s-countries").textContent = new Set(visits.map(v => v.info?.country).filter(Boolean)).size;
+  $("s-today").textContent = visits.filter(v => new Date(v.created_at).toDateString() === today).length;
+
+  $("empty").style.display = list.length ? "none" : "block";
+  $("rows").innerHTML = list.map((v, i) => {
+    const d = v.info || {};
+    return `<tr class="row" onclick="toggle(${v.id})">
+      <td>${esc(new Date(v.created_at).toLocaleString())}</td>
+      <td>${esc(d.ip)}</td>
+      <td>${esc([d.city, d.region, d.country].filter(Boolean).join(", "))}</td>
+      <td>${esc(d.isp)}</td>
+      <td>${esc(d.deviceType)}</td>
+      <td>${esc(d.screen)}</td>
+      <td>${esc(d.effectiveType)}</td>
+      <td>${esc(d.referrer)}</td>
+    </tr>
+    <tr class="detail" id="d-${v.id}" style="display:none"><td colspan="8">${esc(JSON.stringify(d, null, 2))}</td></tr>`;
+  }).join("");
+}
+
+function toggle(id) {
+  const el = $("d-" + id);
+  el.style.display = el.style.display === "none" ? "table-row" : "none";
+}
+
+function exportCSV() {
+  const cols = ["ip","city","region","country","isp","deviceType","screen","timeZone","language","referrer","effectiveType","userAgent"];
+  const rows = [["time", ...cols].join(",")].concat(visits.map(v =>
+    [v.created_at, ...cols.map(c => '"' + String(v.info?.[c] ?? "").replace(/"/g, '""') + '"')].join(",")
+  ));
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([rows.join("\n")], { type: "text/csv" }));
+  a.download = "visits.csv";
+  a.click();
+}
+
+$("password").addEventListener("keydown", e => { if (e.key === "Enter") login(); });
+
+try {
+  const t = sessionStorage.getItem("tok");
+  if (t) { token = t; showPanel(); }
+} catch (e) {}
+</script>
+</body>
+</html>
